@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="provaDAO"
+		class="br.com.sc.infra.dao.impl.ProvaDAOJPA">
+	</bean>
+
+	<bean id="repositorioProva"
+		class="br.com.sc.dominio.RepositorioProva">
+		<constructor-arg>
+			<ref bean="provaDAO" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="fachadaDiretorioProvas"
+		class="br.com.sc.dominio.FachadaDiretorioProvas">
+		<!-- Caminho para a pasta utilizada para armazenamento das provas. -->
+		<constructor-arg>
+			<value>c:/provas/armazenamento</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- Classe que injeta as referências estáticas. -->
+	<bean id="injetorReferenciasEstaticas" lazy-init="false"
+		class="br.com.sc.dominio.InjetorDependencias">
+		<constructor-arg>
+			<ref bean="fabricaExtratorQuestoes" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="repositorioProva" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="fachadaDiretorioProvas" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="servicoIndexacao" class="br.com.sc.servico.ServicoIndexacao">
+		<!-- Diretório de armazenamento dos índices -->
+		<constructor-arg>
+			<value>C:/provas/indice</value>
+		</constructor-arg>
+		<!--
+			Caminho relativo para o arquivo contendo palavras a serem ignoradas
+			na busca.
+		-->
+		<constructor-arg>
+			<value>palavras.txt</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- Fábrica que deve ter todos os extratores cadastrados. -->
+	<bean id="fabricaExtratorQuestoes"
+		class="br.com.sc.dominio.extrator.FabricaExtratorQuestoes">
+		<constructor-arg>
+			<map key-type="java.lang.String"
+				value-type="br.com.sc.extrator.ExtratorQuestoes">
+				<entry key="Cesgranrio" value-ref="extratorQuestoesObjetivasCesgranrio"></entry>
+				<entry key="Cespe" value-ref="extratorQuestoesObjetivasCespe"></entry>
+				<entry key="PETROBRAS(Discursiva)" value-ref="extratorQuestoesDiscursivasCesgranrio"></entry>
+				<entry key="BNDES(Objetiva)" value-ref="extratorQuestoesObjetivasCesgranrio"></entry>
+				<entry key="BNDES(Discursiva)" value-ref="extratorQuestoesDiscursivasCesgranrio"></entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!--
+		Extrator de questões objetivas das provas da fundação CESPE
+	-->
+	<bean id="extratorQuestoesObjetivasCespe"
+		class="br.com.sc.dominio.extrator.cespe.ExtratorQuestoesObjetivasCespe"></bean>
+
+
+	<!--
+		Extrator de questões objetivas das provas da fundação CESGRANRIO
+	-->
+	<bean id="extratorQuestoesObjetivasCesgranrio"
+		class="br.com.sc.dominio.extrator.cesgranrio.ExtratorQuestoesObjetivasCesgranrio"></bean>
+	<!--
+		Extrator de questões discursivas das provas da fundação CESGRANRIO
+	-->
+	<bean id="extratorQuestoesDiscursivasCesgranrio"
+		class="br.com.sc.dominio.extrator.cesgranrio.ExtratorQuestoesDiscursivasCesgranrio"></bean>
+</beans>
