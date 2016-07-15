@@ -10,13 +10,13 @@
 		<class>br.com.sc.dominio.Prova</class>
 		
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/scdb" />
 
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost/scdb" />
+			<property name="hibernate.connection.username" value="sca_usr" />
+			<property name="hibernate.connection.password" value="SCA@2010" />
 
-			<property name="hibernate.connection.username" value="postgres" />
-			<property name="hibernate.connection.password" value="post" />
-			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

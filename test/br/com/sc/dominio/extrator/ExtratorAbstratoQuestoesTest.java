@@ -32,10 +32,10 @@ public class ExtratorAbstratoQuestoesTest {
 		BufferedInputStream streamArquivo;
 		try {
 			streamArquivo = new BufferedInputStream(
-					new FileInputStream("cespe/2004/prova.pdf"));
+					new FileInputStream("cesgranrio/prova81.pdf"));
 			byte[] arquivo = IOUtils.toByteArray(streamArquivo);
 
-			Prova prova = new Prova("prova.pdf", "Cespe", 2004, arquivo);
+			Prova prova = new Prova("prova81.pdf", "Cesgranrio", 2005, arquivo);
 
 			System.out.println("***PROVA RECONSTITUÍDA***");
 			for (Questao questao : prova.getQuestoes()) {
